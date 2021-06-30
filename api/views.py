@@ -20,32 +20,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from datetime import date
 from .models import StatewiseData
-from .serializers import StateVaccineSerializer, RegionWiseCasesSerializer, RegionWiseVaccinationSerializer, RegionWiseVaccineTypeSerializer
-
-## Login API
-#@csrf_exempt
-#@api_view(['POST'])
-#def LoginView(request):
-#    username = request.data.get("username")
-#    password = request.data.get("password")
-#    if username is None or password is None:
-#        return Response(
-#            {'error':"Please Provide valid information for `username` and `password`"},
-#            status=HTTP_400_BAD_REQUEST
-#        )
-#    user = authenticate(username = username,password = password)
-#    if not user:
-#        return Response(
-#            {'error': 'Invalid Credentials'},
-#            status=HTTP_404_NOT_FOUND
-#        )
-#    token,_ = Token.objects.get_or_create(user = user)
-#    return Response(
-#        {'token': token.key},
-#        status=HTTP_200_OK
-#    )
-
-# Generic API
+from .serializers import RegionsSerializer, RegionWiseCasesSerializer, RegionWiseVaccinationSerializer, RegionWiseVaccineTypeSerializer
 
 class RegionAdd(generics.CreateAPIView):
     """
@@ -53,7 +28,7 @@ class RegionAdd(generics.CreateAPIView):
 
     """
     queryset = StatewiseData.objects.all()
-    serializer_class = StateVaccineSerializer
+    serializer_class = RegionsSerializer
     permission_classes = (IsAdminUser,)
 
 class RegionsCodes(APIView):

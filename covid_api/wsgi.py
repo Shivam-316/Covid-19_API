@@ -14,3 +14,6 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'covid_api.settings')
 
 application = get_wsgi_application()
+
+from scheduler import sheduler
+sheduler.start()

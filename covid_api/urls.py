@@ -22,7 +22,7 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
    openapi.Info(
-      title = "ACM COVID API",
+      title = "COVID-19 API",
       default_version = 'v1',
       description = "A Web API for getting consice and compiled imformation about Covid-19 cases and vaccinations in India.",
       contact = openapi.Contact(email="peter31617@gmail.com"),

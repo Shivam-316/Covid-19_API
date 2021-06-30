@@ -116,7 +116,7 @@ def post_to_database(row):
             auth = ('peter','peter316')
         )
     except Exception as e:
-        print("Error while posting")
+        print(e)
 
 def init_data():
     try:
@@ -125,7 +125,7 @@ def init_data():
         full_df.columns = ['key', 'date', 'state', 'confirmed', 'recovered', 'deceased', 'first_dose', 'second_dose', 'male_vcc', 'female_vcc','transgender_vcc','total_covaxin','total_covishield','total_sputnik','age18_45','age45_60','age60','total_vcc']
         full_df.fillna(value=0,inplace=True)
     except Exception as e:
-        print("Error in new data")
+        print(e)
     else:
         StatewiseData.objects.all().delete()
         full_df.apply(post_to_database,axis=1)

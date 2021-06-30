@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import StatewiseData
 
-class StateVaccineSerializer(serializers.ModelSerializer):
+class RegionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = StatewiseData
         fields = '__all__'
