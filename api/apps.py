@@ -7,5 +7,7 @@ class ApiConfig(AppConfig):
 
     def ready(self):
         import api.signals
-        from scheduler import sheduler
-        sheduler.start()
+        import dramatiq
+        from dramatiq.brokers.rabbitmq import RabbitmqBroker
+        rabbitmq_broker = RabbitmqBroker(host="rabbitmq")
+        dramatiq.set_broker(rabbitmq_broker)

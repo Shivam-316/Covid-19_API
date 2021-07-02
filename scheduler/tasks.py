@@ -1,6 +1,6 @@
+import logging
+import dramatiq
 import pandas as pd
-import numpy as np
-import json
 import requests as req
 import io
 from datetime import datetime, date, timedelta
@@ -118,6 +118,7 @@ def post_to_database(row):
     except Exception as e:
         print(e)
 
+@dramatiq.actor()
 def init_data():
     try:
         full_df = pd.concat([state_data(),india_data()],axis=0)
@@ -129,5 +130,3 @@ def init_data():
     else:
         StatewiseData.objects.all().delete()
         full_df.iloc[:3].apply(post_to_database,axis=1)
-
-init_data()
