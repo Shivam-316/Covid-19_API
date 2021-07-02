@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
     # local
     'api.apps.ApiConfig',
+    'scheduler.apps.SchedulerConfig',
 ]
 
 MIDDLEWARE = [

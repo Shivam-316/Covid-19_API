@@ -128,4 +128,4 @@ def init_data():
         print(e)
     else:
         StatewiseData.objects.all().delete()
-        full_df.iloc[:3].apply(post_to_database,axis=1)
+        full_df.apply(post_to_database,axis=1)
