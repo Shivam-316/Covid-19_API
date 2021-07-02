@@ -7,5 +7,3 @@ class ApiConfig(AppConfig):
 
     def ready(self):
         import api.signals
-        from scheduler import sheduler
-        sheduler.start()

@@ -129,5 +129,3 @@ def init_data():
     else:
         StatewiseData.objects.all().delete()
         full_df.iloc[:3].apply(post_to_database,axis=1)
-
-init_data()
