@@ -3,20 +3,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework.permissions import IsAdminUser
-from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.status import (
-    HTTP_400_BAD_REQUEST,
-    HTTP_404_NOT_FOUND,
-    HTTP_200_OK
-)
 
 from django.http import Http404
-from django.shortcuts import render
-from django.contrib.auth import authenticate
-from django.db.models import Sum, Count, Q
+from django.db.models import Sum, Q
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.decorators.csrf import csrf_exempt
 
 from datetime import date
 from .models import StatewiseData
@@ -83,6 +74,19 @@ class RegionCasesTimeSeries(APIView):
 
 
 # Vaccination API
+class RegionsVaccination(APIView):
+    """
+    Returns total and today confirmed cases for each state.
+    """
+    renderer_classes = [JSONRenderer]
+    
+    def get(self, request, format=None):
+        context = StatewiseData.objects.values('state').annotate(
+            total_vaccinations = Sum('first_dose'),
+            today_vaccinations = Sum('first_dose', filter = Q(date = date.today())))
+        return Response(context)
+
+
 class RegionVaccinationTimeSeries(APIView):
     """
     Returns first and second dose timeseries of vaccinations in a region over past month.
