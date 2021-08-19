@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from rest_framework.permissions import AllowAny
-from rest_framework.documentation import include_docs_urls
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
@@ -36,7 +35,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/rest-auth/',include('rest_auth.urls')),
     path('api/v1/',include('api.urls')),
-    path('api-auth/',include('rest_framework.urls')),
+    #path('api-auth/',include('rest_framework.urls')),
     path('doc/', schema_view.with_ui('redoc'), name='schema-redoc'),
+    path('scheduler/',include('scheduler.urls')),
     path('', schema_view.with_ui('swagger'), name='schema-swagger-ui'),
 ]

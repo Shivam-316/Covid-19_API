@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework.authtoken',
     'rest_auth',
-    'django_apscheduler',
 
     # local
     'api.apps.ApiConfig',

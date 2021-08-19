@@ -43,27 +43,32 @@ def merge_and_relative_bind(cases_data, vacc_data, codes_data):
   final_data = cases_data.merge(vacc_data, how='outer')
   final_data = codes_data.merge(final_data, on='State')
   final_data = final_data.fillna(0)
-  final_data_ahead = final_data.copy()
-  final_data_ahead = final_data_ahead.drop([final_data_ahead.shape[0] -1], axis=0)
-  final_data_ahead.drop(['key','State','Date'], axis=1, inplace=True)
-  mask_df = pd.DataFrame(np.zeros_like(final_data_ahead.iloc[0], shape=(1,final_data_ahead.shape[1])), columns=final_data_ahead.columns)
-  final_data_mask = pd.concat([mask_df, final_data_ahead], ignore_index=True)
-  correct_final_data = final_data.subtract(final_data_mask)
-  correct_final_data = correct_final_data.drop([0])
-  correct_final_data.Date, correct_final_data.key, correct_final_data.State = final_data.Date.dt.strftime('%Y-%m-%d'), final_data.key, final_data.State
-  data = correct_final_data[
-    ['key', 'Date', 'State', 'Confirmed', 'Recovered', 'Deceased',
-     'First Dose Administered', 'Second Dose Administered',
-     'Male (Doses Administered)', 'Female (Doses Administered)',
-     'Transgender (Doses Administered)', 'Covaxin (Doses Administered)',
-     'CoviShield (Doses Administered)','Sputnik V (Doses Administered)',
-     '18-44 Years (Doses Administered)','45-60 Years (Doses Administered)',
-     '60+ Years (Doses Administered)','Total Doses Administered',
+  corrected_final_data = pd.DataFrame(columns=final_data.columns)
+  for key in final_data.key.unique():
+    state_data = final_data[final_data.key == key]
+    state_data_ahead = state_data.copy()
+    state_data_ahead = state_data_ahead.drop([state_data_ahead.index[-1]], axis=0)
+    state_data_ahead.drop(['key','State','Date'], axis=1, inplace=True)
+    mask_df = pd.DataFrame(np.zeros_like(state_data_ahead.iloc[0], shape=(1,state_data_ahead.shape[1])), columns=state_data_ahead.columns)
+    state_data_mask = pd.concat([mask_df, state_data_ahead], ignore_index=True)
+    state_data.reset_index(drop=True, inplace=True)
+    correct_state_data = state_data.subtract(state_data_mask)
+    correct_state_data = correct_state_data.drop([0])
+    correct_state_data.Date, correct_state_data.key, correct_state_data.State = state_data.Date.dt.strftime('%Y-%m-%d'), state_data.key, state_data.State
+    corrected_final_data = corrected_final_data.append(correct_state_data, ignore_index=True)
+  corrected_final_data = corrected_final_data[
+      ['key', 'Date', 'State', 'Confirmed', 'Recovered', 'Deceased',
+      'First Dose Administered', 'Second Dose Administered',
+      'Male (Doses Administered)', 'Female (Doses Administered)',
+      'Transgender (Doses Administered)', 'Covaxin (Doses Administered)',
+      'CoviShield (Doses Administered)','Sputnik V (Doses Administered)',
+      '18-44 Years (Doses Administered)','45-60 Years (Doses Administered)',
+      '60+ Years (Doses Administered)','Total Doses Administered',
     ]
   ]
-  data.columns = ['key', 'date', 'state', 'confirmed', 'recovered', 'deceased', 'first_dose', 'second_dose', 'male_vcc', 'female_vcc','transgender_vcc','total_covaxin','total_covishield','total_sputnik','age18_45','age45_60','age60','total_vcc']
-
-  return data
+  corrected_final_data.columns = ['key', 'date', 'state', 'confirmed', 'recovered', 'deceased', 'first_dose', 'second_dose', 'male_vcc', 'female_vcc','transgender_vcc','total_covaxin','total_covishield','total_sputnik','age18_45','age45_60','age60','total_vcc']
+  
+  return corrected_final_data
 
 def post_to_database(row):
     try:
@@ -73,6 +78,7 @@ def post_to_database(row):
             headers = {'content-type': 'application/json'},
             auth = ('peter','peter316')
         )
+        print(row)
     except Exception as e:
         print(e, "POST Error")
 
@@ -87,5 +93,5 @@ def init_data():
         print(e, "Data Error")
     else:
         StatewiseData.objects.all().delete()
-        data.iloc[:25].apply(post_to_database,axis=1)
+        data.iloc[:50].apply(post_to_database,axis=1)
 
