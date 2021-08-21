@@ -150,21 +150,15 @@ REST_FRAMEWORK ={
         'rest_framework.premissions.AllowAny',
     ],
     'DEAFULT_AUTHENTICATION_CLASSES':[
-        'rest_framework.authentication.SessionAuthetication',
         'rest_framework.authentication.TokenAuthentication',
-    ]
+        'rest_framework.authentication.SessionAuthetication',
+    ],
+    'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema',
 }
-REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema' }
-
-
-
 
 #CORS_ORIGIN_WHITELIST = (
 #    'http://localhost:8000',
 #)
-
-
-
 
 
 SWAGGER_SETTINGS = {

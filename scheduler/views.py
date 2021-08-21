@@ -1,12 +1,31 @@
-from django.core import management
-from django.http import request
-from django.http.response import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.http import request, JsonResponse
+from scheduler.management.commands._v1private import get_cases_data, get_state_codes, get_vaccination_data
+import pandas
 
-@csrf_exempt
-def collectData(request):
+def runTests(request):
+    context = {}
     try:
-        management.call_command('run_scheduler')
-        return JsonResponse({'Working':"YES!"})
-    except:
-        return JsonResponse({'Working':"No!"})
+        cases  = get_cases_data()
+        assert(isinstance(cases, pandas.core.frame.DataFrame))
+    except Exception as err:
+        context['cases_err'] = err.__str__()
+    else:
+        context['cases_err'] = None
+    
+    try:
+        vacc  = get_vaccination_data()
+        assert(isinstance(vacc, pandas.core.frame.DataFrame))
+    except Exception as err:
+        context['vacc_err'] = err.__str__()
+    else:
+        context['vacc_err'] = None
+
+    try:
+        codes  = get_state_codes()
+        assert(isinstance(codes, pandas.core.frame.DataFrame))
+    except Exception as err:
+        context['codes_err'] = err.__str__()
+    else:
+        context['codes_err'] = None
+    
+    return JsonResponse(context)

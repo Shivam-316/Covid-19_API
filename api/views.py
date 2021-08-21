@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework.permissions import IsAdminUser
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.decorators import api_view, permission_classes
 
 from django.http import Http404
@@ -21,6 +22,7 @@ class RegionAdd(generics.CreateAPIView):
     queryset = StatewiseData.objects.all()
     serializer_class = RegionsSerializer
     permission_classes = (IsAdminUser,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication) 
 
 class RegionsCodes(APIView):
     """

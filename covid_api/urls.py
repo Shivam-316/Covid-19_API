@@ -35,8 +35,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/rest-auth/',include('rest_auth.urls')),
     path('api/v1/',include('api.urls')),
-    #path('api-auth/',include('rest_framework.urls')),
+    path('test/',include('scheduler.urls')),
     path('doc/', schema_view.with_ui('redoc'), name='schema-redoc'),
-    path('scheduler/',include('scheduler.urls')),
     path('', schema_view.with_ui('swagger'), name='schema-swagger-ui'),
 ]
