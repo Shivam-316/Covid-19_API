@@ -7,6 +7,8 @@ from datetime import datetime, date, timedelta
 from api.models import StatewiseData
 from django.urls import reverse
 from covid_api.settings import DEFAULT_DOMAIN
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import User
  
  
 date_today = date.today().isoformat()
@@ -71,12 +73,15 @@ def merge_and_relative_bind(cases_data, vacc_data, codes_data):
   return corrected_final_data
 
 def post_to_database(row):
+    user = User.objects.get(username = 'peter')
     try:
         res = req.post(
             url= DEFAULT_DOMAIN + reverse('addRecords'),
             data = row.to_json(),
-            headers = {'content-type': 'application/json'},
-            auth = ('peter','peter316')
+            headers = {
+              'content-type': 'application/json',
+              'Authorization': f'Token {Token.objects.get(user=user)}'
+            },
         )
         print(row)
     except Exception as e:
