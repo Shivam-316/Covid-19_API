@@ -1,7 +1,7 @@
 # Covid-19 API : [Doc Link](http://peter316.pythonanywhere.com/ "Doc Link")
 ![Python](https://img.shields.io/badge/python-%2314354C.svg?style=for-the-badge&logo=python&logoColor=white) ![DjangoREST](https://img.shields.io/badge/DJANGO-REST-ff1709?style=for-the-badge&logo=django&logoColor=white&color=ff1709&labelColor=gray) ![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white) 	![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
 
-A Web API for getting consice and compiled imformation at a single stop about **Covid-19** cases and vaccinations in **India** in past **30 days**. The data is collected from offical **csv data** file provided by Goverenment of India, processed using **data analytic** libraries and hosted on **pythonanywhere**
+A Web API for getting concise and compiled information at a single stop about Covid-19 cases and vaccinations in India in past 30 days. The data is collected from official csv data file provided by Government of India, processed using data analytic libraries and hosted on PythonAnywhere
 
 **Front End Application** : [Covid19 Dashboard](https://acmcoviddashboard.netlify.app/ "Covid19 Dashboard")
 
